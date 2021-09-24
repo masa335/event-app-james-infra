@@ -1,0 +1,80 @@
+[
+  {
+    "name": "app",
+    "image": "669670621446.dkr.ecr.ap-northeast-1.amazonaws.com/james-app",
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "/ecs/james",
+        "awslogs-region": "ap-northeast-1",
+        "awslogs-stream-prefix": "production"
+      }
+    },
+    "environment": [
+      {
+        "name": "RAILS_ENV",
+        "value": "production"
+      },
+      {
+        "name": "TZ",
+        "value": "Japan"
+      }
+    ],
+    "secrets": [
+      {
+        "name":"DATABASE_HOST",
+        "valueFrom": "ecs-db-host"
+      },
+      {
+        "name":"DATABASE_NAME",
+        "valueFrom": "ecs-db-name"
+      },
+      {
+        "name":"DATABASE_USERNAME",
+        "valueFrom": "ecs-db-user"
+      },
+      {
+        "name":"DATABASE_PASSWORD",
+        "valueFrom": "ecs-db-password"
+      },
+      {
+        "name":"RAILS_MASTER_KEY",
+        "valueFrom": "ecs-rails-master-key"
+      }
+    ],
+    "command": [
+      "bash",
+      "-c",
+      "rm -f tmp/pids/server.pid && bundle exec puma -C config/puma.rb"
+    ],
+    "workingDirectory": "/app",
+    "essential": true
+  },
+  {
+    "name": "nginx",
+    "image": "669670621446.dkr.ecr.ap-northeast-1.amazonaws.com/james-nginx",
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "secretOptions": null,
+      "options": {
+        "awslogs-group": "/ecs/james",
+        "awslogs-region": "ap-northeast-1",
+        "awslogs-stream-prefix": "production"
+      }
+    },
+    "portMappings": [
+      {
+        "protocol": "tcp",
+        "containerPort": 80
+      }
+    ],
+    "workingDirectory": "/app",
+    "volumesFrom": [
+      {
+        "sourceContainer": "app",
+        "readOnly": false
+      }
+    ],
+    "essential": true
+  }
+]

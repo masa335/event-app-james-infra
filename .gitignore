@@ -1,5 +1,4 @@
 **/.terraform/*
-**/container-definitions/*
 *.tfstate
 *.tfstate.*
 *.tfvars
