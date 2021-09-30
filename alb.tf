@@ -36,10 +36,11 @@ resource "aws_alb_target_group" "james_alb_tg" {
 }
 
 resource "aws_alb_listener" "james_alb_listener" {
-  port              = "80"
-  protocol          = "HTTP"
-
-  load_balancer_arn = "${aws_alb.james_alb.arn}"
+  load_balancer_arn = aws_alb.james_alb.arn
+  port              = "443"
+  protocol          = "HTTPS"
+  certificate_arn   = aws_acm_certificate.james-acm.arn
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
 
   default_action {
     target_group_arn = "${aws_alb_target_group.james_alb_tg.arn}"
