@@ -23,9 +23,9 @@ resource "aws_ecs_service" "james_service" {
   enable_execute_command             = true
   desired_count                      = 1
 
-  # lifecycle {
-  #  ignore_changes = [desired_count, task_definition]
-  # }
+  lifecycle {
+   ignore_changes = [desired_count, task_definition]
+  }
 
   load_balancer {
     target_group_arn = "${aws_alb_target_group.james_alb_tg.arn}"
