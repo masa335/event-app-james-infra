@@ -21,7 +21,7 @@ resource "aws_route_table_association" "james_public_subenet_1c_rt_assoc" {
   route_table_id = aws_route_table.james_public_rt.id
 }
 
-# DBインスタンスからインターネットに接続する必要がある場合に必要
+# デプロイ時など、プライベートサブネットからインターネットに接続する必要がある場合に必要
 
 # resource "aws_route_table" "james_private_rt_1a" {
 #   vpc_id = aws_vpc.james_vpc.id
