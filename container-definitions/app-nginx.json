@@ -40,12 +40,28 @@
       {
         "name":"RAILS_MASTER_KEY",
         "valueFrom": "ecs-rails-master-key"
+      },
+      {
+        "name":"EMAIL_ADDRESS",
+        "valueFrom": "ecs-email-address"
+      },
+      {
+        "name":"EMAIL_PASSWORD",
+        "valueFrom": "ecs-email-password"
+      },
+      {
+        "name":"AWS_ACCESS_KEY_ID",
+        "valueFrom": "ecs-aws-access-key-id"
+      },
+      {
+        "name":"AWS_SECRET_ACCESS_KEY",
+        "valueFrom": "ecs-aws-secret-access-key"
       }
     ],
     "command": [
       "bash",
       "-c",
-      "rm -f tmp/pids/server.pid && bundle exec puma -C config/puma.rb"
+      "bundle exec rails db:migrate && bundle exec puma -C config/puma.rb"
     ],
     "workingDirectory": "/app",
     "essential": true
