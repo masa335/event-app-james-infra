@@ -21,11 +21,11 @@ resource "aws_ecs_service" "james_service" {
   name                               = "james-service"
   task_definition                    = aws_ecs_task_definition.james_app_nginx.arn
   enable_execute_command             = true
-  desired_count                      = 1
+  desired_count                      = 2
 
-  lifecycle {
-   ignore_changes = [desired_count, task_definition]
-  }
+  # lifecycle {
+  #  ignore_changes = [desired_count, task_definition]
+  # }
 
   load_balancer {
     target_group_arn = "${aws_alb_target_group.james_alb_tg.arn}"
@@ -35,8 +35,8 @@ resource "aws_ecs_service" "james_service" {
 
   network_configuration {
     subnets          = [
-      aws_subnet.james_private_subnet_1a.id,
-      aws_subnet.james_private_subnet_1c.id
+      aws_subnet.james_public_subnet_1a.id,
+      aws_subnet.james_public_subnet_1c.id
     ]
     security_groups  = [
       aws_security_group.james_sg_app.id,
